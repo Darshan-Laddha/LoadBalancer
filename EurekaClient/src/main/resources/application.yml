@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+# This is where you set the name for the Eureka client
+spring:
+  application:
+    name: GREETING-SERVICE
+
+eureka:
+  client:
+    service-url:
+      # This tells it where to register
+      defaultZone: http://localhost:8761/eureka/

@@ -1,0 +1,12 @@
+server:
+  port: 8761
+
+# You would add this block
+spring:
+  application:
+    name: EUREKA-SERVER
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
