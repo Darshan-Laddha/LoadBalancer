@@ -5,3 +5,4 @@
 * [What is Eureka Server and Discovery Client](eureka.md)
 * [Need for API Gateway](api_gateway.md)
 * [Steps to Run and Test the Application](run_and_test.md)
+* [Integrating new client/s](client_integration.md)
