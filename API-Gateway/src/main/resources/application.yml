@@ -11,12 +11,47 @@ spring:
           uri: lb://GREETING-SERVICE
           predicates:
             - Path=/greeting/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                # This name links the route to your Resilience4j instance
+                name: my-backend-service
+                # You also need a fallback
+                # This redirects the user to /fallbackRoute if the circuit is OPEN
+                fallbackUri: forward:/fallbackRoute
 
 # Configure it as a Eureka client so it can find other services
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+# application.yml
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      # This is a custom name for your circuit breaker. We'll use this name in the code.
+      my-backend-service:
+        failure-rate-threshold: 60 # 60%
+
+        # --- Important: Minimum Calls ---
+        # Don't start calculating the failure rate until at least 10 calls
+        # This prevents 1 failed call out of 2 (50%) or 3 out of 5 (60%)
+        # from tripping the circuit too early.
+        minimum-number-of-calls: 10 # This value is for testing purpose
+
+        # --- Other Good Configurations ---
+
+        # How long to stay in the OPEN state (e.g., 60 seconds)
+        # before transitioning to HALF_OPEN to try a test call.
+        wait-duration-in-open-state: 60s
+
+        # How many test calls to allow in the HALF_OPEN state
+        permitted-number-of-calls-in-half-open-state: 5
+
+        # Register a health indicator for Spring Boot Actuator
+        register-health-indicator: true
 
 
   
